@@ -54,9 +54,9 @@ def init():
 
 	# D.next_point = D.trajectory.pop(0)
 
-	D.x_desired     = D.x_vicon
-	D.y_desired     = D.y_vicon
-	D.theta_desired = D.theta_vicon
+	D.x_desired     = None
+	D.y_desired     = None
+	D.theta_desired = None
 
 	# initialize point tracking control gains
 	D.k_rho       = 0.5 		# needs to be less than k_alpha and (+) 
@@ -134,9 +134,14 @@ def fly_to_set_point():
 	global D
 
 	# calculate change in the x, y, and theta
-	x_delta     = D.x_desired - D.x_vicon
-	y_delta     = D.y_desired - D.y_vicon
-	theta_delta = norm_angle(D.theta_desired - D.theta_vicon)
+	if (D.x_desired):
+		x_delta     = D.x_desired - D.x_vicon
+		y_delta     = D.y_desired - D.y_vicon
+		theta_delta = norm_angle(D.theta_desired - D.theta_vicon)
+	else:
+		x_delta = 0.0
+		y_delta = 0.0
+		theta_delta = 0.0
 
 	# determine if the robot is doing in-place rotation
 	inPlaceRot = False
