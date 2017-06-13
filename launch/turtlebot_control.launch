@@ -1,0 +1,7 @@
+<launch>
+
+<node pkg="turtlebot_vicon_control" type="turtlebot_api_client.py" name="turtlebot_api_client" output="screen"/> 
+<node pkg="turtlebot_vicon_control" type="turtlebot_api_server.py" name="turtlebot_api_server" output="screen"/> 
+<node pkg="turtlebot_vicon_control" type="point_tracker.py" name="point_tracker" output="screen"/> 
+
+</launch>

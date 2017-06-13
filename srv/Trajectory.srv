@@ -1,0 +1,4 @@
+float32[] trajectory_x
+float32[] trajectory_y
+---
+string msg
