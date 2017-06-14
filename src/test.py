@@ -1,8 +1,13 @@
 #!/usr/bin/env python
 
-from turtlebot_api_client import TurtlebotClient
+from turtlebot_mpex_client import *
+from bebop_api_client import Bebop
+import time
 
-turtlebot_client = TurtlebotClient('turtlebot')
+# turtlebot_client = TurtlebotClient('turtlebot')
+
+# make bebop client object
+bebop1 = Bebop('bebop1')
 
 # Locations
 point_a = [0,0]          # start location
@@ -11,133 +16,33 @@ point_c = [-0.969,1.415] # point in the middle field
 point_d = [-2.018,0.038] # corner next to entrance door
 point_e = [-2.093,1.416] # corner next to rover
 
-## Starting at a
-# path from a to b
-path_a_b = [[0,0],
-            [-0.54,0.231],
-            [-0.38,0.743],
-            [-0.073,1.306],
-            [-0.078,2.42]]
+move(0,10,'a','A','B')
+time.sleep(20)
 
-# path from a to c
-path_a_c = [[0,0],
-            [-0.54, 0.231],
-            [-0.48, 0.743],
-            [-0.684,1.110],
-            [-0.969,1.415]]
+move(0,10,'a','B','D')
+time.sleep(30)
 
-# path from a to d
-path_a_d = [[0,0],
-            [-0.54, 0.231],
-            [-0.48, 0.743],
-            [-0.684,1.110],
-            [-0.969,1.415],
-            [-1.247,1.000],
-            [-1.258,0.762],
-            [-2.018,0.038]]
+# takeoff command - no input
+bebop1.takeoff()
 
-## Starting at b
-# path from b to a
-path_b_a = [[-0.078,2.420],
-            [0.0, 1.854],
-            [-0.073,1.306],
-            [-0.38,0.743],
-            [-0.54,0.231],
-            [0.1,0]]
+time.sleep(5)
 
-# path from b to c
-path_b_c = [[-0.078,2.420],
-            [0.0, 1.854],
-            [-0.016,0.781],
-            [-0.684,1.110],
-            [-0.969,1.415]]
+bebop1.fly_to(-2.093, 1.416,0.9)
 
-# path from b to d
-path_b_d = [[-0.078,2.420],
-            [0.0, 1.854],
-            [-0.016,0.781],
-            [-0.684,1.110],
-            [-0.969,1.415],
-            [-1.247,1.000],
-            [-1.258,0.762],
-            [-2.018,0.038]]
+time.sleep(10)
 
-## Starting at c
-# path from c to d
-path_c_d = [[-0.969,1.415],
-            [-1.247,1.000],
-            [-1.258,0.762],
-            [-2.018,0.038]]
+bebop1.turtlebot_land()
 
-## Starting at d
-# path from d to a
-path_d_a = [[-2.018,0.038],
-            [-1.268,0.802],
-            [-1.247,1.000],
-            [-0.969,1.215],
-            [-0.684,1.110],
-            [-0.54, 0.231],
-            [0.1,0]]
-
-# path from d to b
-path = [[-2.018,0.038],
-            [-1.268,0.802],
-            [-1.247,1.000],
-            [-0.969,1.415],
-            [-0.684,1.110],
-            [-0.48, 0.743],
-            [-0.073,1.306],
-            [-0.078,2.42]]
-
-# path from d to c
-path_d_c = [[-2.018,0.038],
-            [-1.268,0.802],
-            [-1.247,1.000],
-            [-0.969,1.415]]
-
-# # path from b to c
-# path = [[0,0],
-#         [-0.54, 0.231],
-#         [-0.48, 0.743],
-#         [-0.684,1.110],
-#         [-0.969,1.415]]
-
-# # path from b to e
-# path = [[0,0],
-#         [-0.54, 0.231],
-#         [-0.48, 0.743],
-#         [-0.684,1.110],
-#         [-0.969,1.415],
-#         [-1.247,1.000],
-#         [-1.258,0.762],
-#         [-1.961,0.451],
-#         [-2.093,1.416]]
-
-# # path from b to d
-# path = [[0,0],
-#         [-0.54, 0.231],
-#         [-0.48, 0.743],
-#         [-0.684,1.110],
-#         [-0.969,1.415],
-#         [-1.247,1.000],
-#         [-1.258,0.762],
-#         [-2.018,0.038]]
+time.sleep(20)
 
 
-# # path from a to e
-# path = [[0,0],
-#         [-0.54, 0.231],
-#         [-0.48, 0.743],
-#         [-0.684,1.110],
-#         [-0.969,1.415],
-#         [-1.247,1.000],
-#         [-1.258,0.762],
-#         [-1.961,0.451],
-#         [-2.093,1.416]]
+# Two landing options:
 
+# land command - no input
+# bebop1.land()
 
+# land on turtlebot command - no input
+# bebop1.turtlebot_land()
 
-path_x = [point[0] for point in path]
-path_y = [point[1] for point in path]
-
-turtlebot_client.follow_trajectory(path_x,path_y)
+move(0,10,'a','D','A')
+time.sleep(30)

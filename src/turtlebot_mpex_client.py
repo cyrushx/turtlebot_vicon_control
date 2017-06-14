@@ -3,6 +3,7 @@
 import rospy
 from mpex_interface import MpexClient
 from turtlebot_api_client import TurtlebotClient
+from mpex_msgs.msg import StartPddlAction
 
 turtlebot_client = TurtlebotClient('turtlebot')
 
@@ -34,6 +35,10 @@ Dtraj['C'] = [(-2.018,0.038),(-1.268,0.802),(-1.247,1.000),(-0.969,1.415)]
 trajectories['D'] = Dtraj
    
 def move(lb, ub, robot, from_name, to_name):
+	print(lb)
+	print(ub)
+	print(from_name)
+	print(to_name)
 	path = trajectories[from_name][to_name]
 	path_x = [point[0] for point in path]
 	path_y = [point[1] for point in path]
@@ -42,11 +47,29 @@ def move(lb, ub, robot, from_name, to_name):
 
 
 def explore(lb, ub, robot):
-	pass
+	turtlebot_client.explore()
+
+def callback(msg):
+	print(msg)
+	print(msg.action)
+	action_name = msg.action.name
+
+	if action_name == "MOVE":
+		robot = msg.action.parameters[0].string_value
+		from_name = msg.action.parameters[1].string_value
+		to_name = msg.action.parameters[2].string_value
+		if robot == "turtlebot":
+			move(0,0,'turtlebot',from_name,to_name)
+
+	if action_name == "EXPLORE":
+		robot = msg.action.parameters[0].string_value
+		if robot == "turtlebot":
+			explore()
 
 
 if __name__ == '__main__':
 	rospy.init_node('turtle_handler', anonymous=True)
+	sub_pad = rospy.Subscriber("mpex/dispatch/start/pddl", StartPddlAction, callback)
 	mpex_client = MpexClient()
 	mpex_client.add_listener('MOVE', move, args=['turtle'])
 	mpex_client.add_listener('EXPLORE', explore, args=['turtle'])
