@@ -181,6 +181,7 @@ catkin_install_python(PROGRAMS
    src/point_tracker.py
    src/turtlebot_api_server.py
    src/turtlebot_api_client.py
+   src/turtlebot_mpex_client.py
 
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

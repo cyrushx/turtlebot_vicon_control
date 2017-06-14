@@ -3,6 +3,8 @@ import roslib
 import rospy
 
 from turtlebot_vicon_control.srv import Trajectory
+from std_srvs.srv import Empty as EmptySrv
+
 from std_msgs.msg import Empty, String, Float64, Bool
 from geometry_msgs.msg import TransformStamped, PoseArray, Pose
 
@@ -18,8 +20,21 @@ class TurtlebotServer(object):
         rospy.Service(self.name+'/send_trajectory', Trajectory,
                       self.send_trajectory_service_callback)
 
+        rospy.Service(self.name+'/send_explore', EmptySrv,
+                      self.send_explore_service_callback)
+
         self.pub_trajectory = rospy.Publisher(
             self.name + '/send_trajectory', PoseArray, queue_size=10)
+
+        self.pub_explore = rospy.Publisher(
+            'sound_effects', String, queue_size=10)
+
+
+    def send_explore_service_callback(self, req):
+        print("** Send turtlebot explore **")
+        self.pub_explore.publish('scanning')
+        return 'Done'
+
         
     def send_trajectory_service_callback(self, req):
 
